@@ -1,9 +1,12 @@
 html,
-body {
+body, p, ul, li, h1, h2, h3, button {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Poppins', sans-serif;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
@@ -15,12 +18,14 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
+.container {
+  color: white;
+  margin: 15rem auto;
+}
+
+@media (min-width: 1044px) {
+  .container {
+    width: 800px;
   }
 }
+
