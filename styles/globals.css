@@ -18,14 +18,4 @@ a {
   box-sizing: border-box;
 }
 
-.container {
-  color: white;
-  margin: 15rem auto;
-}
-
-@media (min-width: 1044px) {
-  .container {
-    width: 800px;
-  }
-}
 
