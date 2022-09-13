@@ -9,7 +9,7 @@ const Battery = () => {
   return (
     <S.Container>
       <h2>Battery (%)</h2>
-      <p>{selectedKeg.battery} %</p>
+      <p>{selectedKeg.battery}%</p>
     </S.Container>
   )
 }
