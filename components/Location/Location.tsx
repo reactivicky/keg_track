@@ -13,7 +13,7 @@ const Location = () => {
       <S.LatLong>
         Latitude, Longitude
       </S.LatLong>
-      <p>{selectedKeg.latitude}%</p>
+      <p>{selectedKeg.latitude}</p>
     </S.Container>
   )
 }
