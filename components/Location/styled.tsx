@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.nav`
-  outline: 1px solid green;
   grid-column: span 3;
   display: flex;
   align-items: center;

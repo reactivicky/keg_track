@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 
 export const Container = styled.div`
 	width: 300px;
-	outline: 1px solid red;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-shrink: 0;
+	border-right: 1px solid black;
 `;
 
 export const Links = styled.ul`

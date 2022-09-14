@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import Temperature from "./Temperature/Temperature";
 import Volume from "./Volume/Volume";
 import Location from "./Location/Location";
+import TableComponent from "./TableComponent/TableComponent";
 
 
-export { Layout, Sidebar, Navbar, Temperature, Volume, Battery, Location };
+export { Layout, Sidebar, Navbar, Temperature, Volume, Battery, Location, TableComponent };

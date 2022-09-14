@@ -7,6 +7,12 @@ export const Container = styled.nav`
   align-items: center;
 `;
 
-export const Heading = styled.h1`
+export const TextContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
   
+  h2 {
+    flex-grow: 1;
+    text-align: center;
+  }
 `;
