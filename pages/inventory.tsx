@@ -1,5 +1,5 @@
 import * as S from "../styles/Inventory.styled";
-import { TableComponent } from "../components";
+import { HorStackChart, TableComponent } from "../components";
 
 const InventoryPage = () => {
 	return (
@@ -8,6 +8,7 @@ const InventoryPage = () => {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 		>
+			<HorStackChart />
 			<S.TableContainer>
 				<TableComponent />
 			</S.TableContainer>
