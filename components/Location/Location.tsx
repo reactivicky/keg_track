@@ -1,22 +1,27 @@
 import * as S from "./styled";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 const Location = () => {
 	const { latitude, longitude } = useSelector(
 		(state: RootState) => state.kegState.selectedKeg
 	);
-	const { isLoaded } = useLoadScript({
-		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-	});
 
-	if (!isLoaded) return <div>Loading...</div>;
 	return (
 		<S.Container>
 			<h2>Location of the device</h2>
-			<S.LatLong>Latitude, Longitude</S.LatLong>
-			<GoogleMap zoom={10} center={{ lat: latitude, lng: longitude }} mapContainerClassName="map-container" />
+			<S.LatLong>{latitude}, {longitude}</S.LatLong>
+			<div>
+				<iframe
+					id="iframeId"
+					src={`https://maps.google.com/maps?q=${latitude},${longitude}&hl=es;&output=embed`}
+					title="The GeoLocation of Container"
+					height="300px"
+					width="500px"
+				>
+					Current Location Of Container
+				</iframe>
+			</div>
 		</S.Container>
 	);
 };

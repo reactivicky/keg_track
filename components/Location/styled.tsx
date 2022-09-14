@@ -14,5 +14,6 @@ export const Container = styled.nav`
 export const LatLong = styled.div`
   padding: 1rem 2rem;
   outline: 1px solid black;
+  margin-bottom: 1rem;
 `
 

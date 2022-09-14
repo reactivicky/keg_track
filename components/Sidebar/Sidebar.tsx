@@ -8,7 +8,7 @@ const Sidebar = () => {
 	const links = [
 		{ name: "Home", link: "/" },
 		{ name: "Inventory", link: "/inventory" },
-		{ name: "Retailer Full Product", link: "/" },
+		{ name: "Retailer Full Product", link: "/retailer" },
 		{ name: "Keg Availability", link: "/" },
 		{ name: "Product Availability", link: "/" },
 	];

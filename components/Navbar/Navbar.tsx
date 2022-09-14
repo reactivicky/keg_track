@@ -17,6 +17,7 @@ const options = Data.map((dataObj) => {
 const Navbar = () => {
 	const router = useRouter();
 	const isInventoryPage = router.pathname === "/inventory";
+	const isRetailerPage = router.pathname === "/retailer";
 	const selectedKeg = useSelector(
 		(state: RootState) => state.kegState.selectedKeg
 	);
@@ -26,8 +27,9 @@ const Navbar = () => {
 			<S.TextContainer>
 				<h1>KegTracker</h1>
 				{isInventoryPage && <h2>Inventory</h2>}
+				{isRetailerPage && <h2>Retailer Full Product</h2>}
 			</S.TextContainer>
-			{!isInventoryPage && (
+			{router.pathname === "/" && (
 				<Select
 					defaultValue={selectedKeg}
 					onChange={(val) => dispatch(update(val))}

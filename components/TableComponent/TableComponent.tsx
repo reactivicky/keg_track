@@ -19,26 +19,33 @@ const TableComponent = () => {
 	const selectedInventory = useSelector(
 		(state: RootState) => state.inventoryState.selectedInventory
 	);
-	const dataWithColors = Data.map(obj => {
-		let color = ''
-		switch(obj.Type) {
-			case 'Pale Ale':
+	const dataWithColors = Data.map((obj) => {
+		let color = "";
+		switch (obj.Type) {
+			case "Pale Ale":
 				color = "#f58ae8";
-			case 'India Pale Ale':
+				return { ...obj, color };
+			case "India Pale Ale":
 				color = "#f1b725";
-			case 'Red Ale':
+				return { ...obj, color };
+			case "Red Ale":
 				color = "#64efa6";
-			case 'Sour':
+				return { ...obj, color };
+			case "Sour":
 				color = "#fd686c";
-			case 'Lager':
+				return { ...obj, color };
+			case "Lager":
 				color = "#168bef";
-			case 'Stout':
+				return { ...obj, color };
+			case "Stout":
 				color = "#ae1ed6";
-			case 'Session Pale Ale':
+				return { ...obj, color };
+			case "Session Pale Ale":
 				color = "#f98c3d";
+				return { ...obj, color };
 		}
-		return {...obj, color}
-	})
+		return obj
+	});
 	const filterData = useMemo(() => {
 		if (selectedInventory) {
 			return dataWithColors.filter((obj) => obj.Type === selectedInventory);
@@ -51,6 +58,9 @@ const TableComponent = () => {
 			{
 				Header: "Type Color",
 				accessor: "color",
+				Cell: (props: any) => {
+					return <S.ColoredCircle color={props.value} />;
+				},
 			},
 			{
 				Header: "Type",
