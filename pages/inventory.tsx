@@ -8,7 +8,9 @@ const InventoryPage = () => {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 		>
-			<HorStackChart />
+			<S.ChartContainer>
+				<HorStackChart />
+			</S.ChartContainer>
 			<S.TableContainer>
 				<TableComponent />
 			</S.TableContainer>

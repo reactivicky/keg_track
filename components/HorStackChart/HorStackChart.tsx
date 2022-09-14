@@ -7,7 +7,10 @@ import {
 	Tooltip,
 	Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { useRef } from "react";
+import {  useDispatch } from "react-redux";
+import { update } from "../../app/InventorySlice";
+import { Bar, getElementAtEvent } from "react-chartjs-2";
 import Data from "../../Data/Data";
 
 ChartJS.register(
@@ -55,7 +58,7 @@ const filteredDataWithColors = filteredData.map((obj, i) => {
 	return {
 		...obj,
 		backgroundColor: colors[i],
-    barThickness: 50
+    barThickness: 50,
 	};
 });
 
@@ -67,10 +70,22 @@ export const data = {
 };
 
 const HorStackChart = () => {
+	const dispatch = useDispatch();
+	const chartRef: any = useRef();
+	const onClick = (event: any) => {
+		if (getElementAtEvent(chartRef.current, event)[0]) {
+			const element = filteredDataWithColors[getElementAtEvent(chartRef.current, event)[0].datasetIndex]
+			dispatch(update(element.label))
+
+		}
+  }
 	return (
 		<Bar
+			ref={chartRef}
+			onClick={onClick}
 			options={{
 				indexAxis: "y" as const,
+				maintainAspectRatio: false,
 				plugins: {
 					legend: {
 						position: "bottom" as const,
@@ -90,6 +105,9 @@ const HorStackChart = () => {
 					},
 					y: {
 						stacked: true,
+						ticks: {
+              display: false
+            },
             grid: {
               display: false
             }

@@ -3,19 +3,55 @@ import { useTable } from "react-table";
 import Data from "../../Data/Data";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-
 import * as S from "./styled";
 
+const colors = [
+	"#f58ae8",
+	"#f1b725",
+	"#64efa6",
+	"#fd686c",
+	"#168bef",
+	"#ae1ed6",
+	"#f98c3d",
+];
+
 const TableComponent = () => {
-	const selectedKeg = useSelector(
-		(state: RootState) => state.kegState.selectedKeg
+	const selectedInventory = useSelector(
+		(state: RootState) => state.inventoryState.selectedInventory
 	);
+	const dataWithColors = Data.map(obj => {
+		let color = ''
+		switch(obj.Type) {
+			case 'Pale Ale':
+				color = "#f58ae8";
+			case 'India Pale Ale':
+				color = "#f1b725";
+			case 'Red Ale':
+				color = "#64efa6";
+			case 'Sour':
+				color = "#fd686c";
+			case 'Lager':
+				color = "#168bef";
+			case 'Stout':
+				color = "#ae1ed6";
+			case 'Session Pale Ale':
+				color = "#f98c3d";
+		}
+		return {...obj, color}
+	})
 	const filterData = useMemo(() => {
-		return Data.filter(obj => obj.Type === selectedKeg.Type)
-	}, [selectedKeg])
+		if (selectedInventory) {
+			return dataWithColors.filter((obj) => obj.Type === selectedInventory);
+		}
+		return dataWithColors;
+	}, [dataWithColors, selectedInventory]);
 	const data = useMemo(() => filterData, [filterData]);
 	const columns = useMemo(
 		() => [
+			{
+				Header: "Type Color",
+				accessor: "color",
+			},
 			{
 				Header: "Type",
 				accessor: "Type",
