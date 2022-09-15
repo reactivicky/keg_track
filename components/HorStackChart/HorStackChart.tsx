@@ -1,26 +1,17 @@
+import React from "react";
 import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	BarElement,
-	Title,
+	BarChart,
+	Bar,
+	XAxis,
+	YAxis,
 	Tooltip,
 	Legend,
-} from "chart.js";
-import { useRef } from "react";
-import {  useDispatch } from "react-redux";
+	ResponsiveContainer,
+} from "recharts";
+import { useDispatch } from "react-redux";
 import { update } from "../../app/InventorySlice";
-import { Bar, getElementAtEvent } from "react-chartjs-2";
 import Data from "../../Data/Data";
-
-ChartJS.register(
-	CategoryScale,
-	LinearScale,
-	BarElement,
-	Title,
-	Tooltip,
-	Legend
-);
+import * as S from './styled'
 
 const colors = [
 	"#f58ae8",
@@ -32,91 +23,88 @@ const colors = [
 	"#f98c3d",
 ];
 
-const filteredData = Data.reduce(
-	(
-		a: {
-			label: string;
-			data: number[];
-		}[],
-		c
-	) => {
-		const sameKeg: any = a.find((kegData: any) => kegData.label === c.Type);
-		if (sameKeg) {
-			sameKeg.data[0] = sameKeg.data[0] + 1;
-		} else {
-			a.push({
-				label: c.Type,
-				data: [1],
-			});
-		}
-		return a;
+const groupByType = Data.reduce((a: any, c) => {
+	const { Type } = c;
+	a[Type] = a[Type] ?? [];
+	a[Type].push(c);
+	return a;
+}, {});
+
+for (let key in groupByType) {
+	groupByType[key] = groupByType[key].length;
+}
+
+const keyArray = Object.keys(groupByType);
+
+const data = [
+	{
+		name: "Product",
+		...groupByType,
 	},
-	[]
-);
-
-const filteredDataWithColors = filteredData.map((obj, i) => {
-	return {
-		...obj,
-		backgroundColor: colors[i],
-    barThickness: 50,
-	};
-});
-
-const labels = ["Type"];
-
-export const data = {
-	labels,
-	datasets: filteredDataWithColors,
-};
+];
 
 const HorStackChart = () => {
-	const dispatch = useDispatch();
-	const chartRef: any = useRef();
-	const onClick = (event: any) => {
-		if (getElementAtEvent(chartRef.current, event)[0]) {
-			const element = filteredDataWithColors[getElementAtEvent(chartRef.current, event)[0].datasetIndex]
-			dispatch(update(element.label))
+	const dispatch = useDispatch()
+	let tooltip = "";
 
+	const CustomTooltip = ({ active, payload }: any) => {
+		if (!active || !tooltip) {
+			return null;
 		}
-  }
+		for (const bar of payload) {
+			if (bar.dataKey === tooltip) {
+				return (
+					<S.ToolTipContainer color={bar.color}>
+						{bar.name}
+						<br />
+						{bar.value.toFixed(2)}
+					</S.ToolTipContainer>
+				);
+			}
+		}
+		return null;
+	};
+
+	const handleMouseOver = (name: string) => {
+		tooltip = name;
+	};
+
+	const handleClick = (e:any) => {
+		dispatch(update(e.tooltipPayload[0].name))
+	}
+
 	return (
-		<Bar
-			ref={chartRef}
-			onClick={onClick}
-			options={{
-				indexAxis: "y" as const,
-				maintainAspectRatio: false,
-				plugins: {
-					legend: {
-						position: "bottom" as const,
-					},
-				},
-				responsive: true,
-				scales: {
-					x: {
-						stacked: true,
-            ticks: {
-              display: false
-            },
-            grid: {
-              display: false,
-              drawBorder: false,
-            },
-					},
-					y: {
-						stacked: true,
-						ticks: {
-              display: false
-            },
-            grid: {
-              display: false
-            }
-					},
-				},
-			}}
-			data={data}
-		/>
+		<ResponsiveContainer width="100%" height="100%">
+			<BarChart
+				layout="vertical"
+				data={data}
+				margin={{
+					top: 20,
+					right: 30,
+					bottom: 5,
+				}}
+			>
+				<XAxis hide type="number" />
+				<YAxis dataKey="name" type="category" tick={false} />
+				<Tooltip cursor={{ fill: "transparent" }} content={<CustomTooltip/>}  />
+				<Legend />
+				{keyArray.map((key, i) => {
+					return (
+						<Bar
+							key={key}
+							barSize={60}
+							name={key}
+							onMouseOver={() => handleMouseOver(key)}
+							dataKey={key}
+							stackId="a"
+							fill={colors[i]}
+							onClick={handleClick}
+						/>
+					);
+				})}
+			</BarChart>
+		</ResponsiveContainer>
 	);
 };
 
-export default HorStackChart;
+export default React.memo(HorStackChart);
